@@ -47,14 +47,14 @@ int M_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
         if (M_KeyDown(m_hdl, HidKeyCode) != 0) {
             return -1;
         }
-        M_DelayRandom(1, 5);
+        M_DelayRandom(1, 2);
         if (M_KeyUp(m_hdl, HidKeyCode) != 0) {
             return -1;
         }
         Nbr--;
         if (Nbr) {
             // M_DelayRandom(150, 600);
-			M_DelayRandom(1, 5);
+			M_DelayRandom(1, 2);
         }
     }
     return 0;
