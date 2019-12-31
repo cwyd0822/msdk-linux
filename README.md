@@ -15,27 +15,30 @@
 双头盒子主控端的Linux接口代码在msdk目录下，demo是例程, msdk.c、hidcomm.c是接口代码。
 
 以下将以ubuntu为例，说明如何在linux开发：
-1、安装libusb
-  1.a 进入msdkLinux目录， ./configure
-  1.b make
-  1.c make install
-  1.d 到这，已经完成安装libusb
-      libusb.h 在/usr/local/include/libusb-1.0
-      libusb.so在/usr/local/lib
+1. 安装libusb
+  1. a 进入msdkLinux目录， ./configure
+  1. b make
+  1. c make install
+  1. d 到这，已经完成安装libusb
+      - libusb.h 在/usr/local/include/libusb-1.0
+      - libusb.so在/usr/local/lib
 
-2、编译demo
-  2.a 进入msdk目录
-  2.b ./build.sh  生成a.out
+2. 编译demo
+  2. a 进入msdk目录
+  2. b ./build.sh  生成a.out
 
-3、测试：
-  3.a 将双头盒子主控端（有孔或印有“主”字的一端）插入电脑，将被控端插到被控机。
+3. 测试：
+  3. a 将双头盒子主控端（有孔或印有“主”字的一端）插入电脑，将被控端插到被控机。
       被控机上打开一个记事本，并将光标点到记事本里
-  3.b 如果您用的是虚拟机，请将该主控端映射入虚拟机中
-  3.c 在/dev/bus/usb/ 中找到新增加的双头盒子，比如 /dev/bus/usb/001/003
+  3. b 如果您用的是虚拟机，请将该主控端映射入虚拟机中
+  3. c 在/dev/bus/usb/ 中找到新增加的双头盒子，比如 /dev/bus/usb/001/003
+  
       hexdump查看该003文件，里面可以查看到盒子对应的VID(C216或C217)、PID(0102)
+	  
       修改权限：sudo chmod 666 /dev/bus/usb/001/003
-  3.d 在msdk目录下，运行 ./a.out
-  3.e 等待5s，被控机上的鼠标将有移动，记事本里将会出现10个a。
+	  
+  3. d 在msdk目录下，运行 ./a.out
+  3. e 等待5s，被控机上的鼠标将有移动，记事本里将会出现10个a。
 
-您可以参考demo.c开发自己的程序。
+**您可以参考demo.c开发自己的程序。**
 
