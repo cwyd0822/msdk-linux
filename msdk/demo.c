@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     }
 
     M_DelayRandom(2000, 3000);
-    if (M_KeyPress(m_hdl, Keyboard_a, 10) == 0) {
+    if (M_KeyPress(m_hdl, Keyboard_a, 1000) == 0) {
         printf("KeyPress Success\n");
     }
     else {
