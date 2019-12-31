@@ -5,10 +5,10 @@
 #include "msdk.h"
 #include "AjjlKeyName.h"
 
-/*******************´ò¿ª¹Ø±Õº¯Êı****************************/
-//´ò¿ª¶Ë¿Ú»ñÈ¡¾ä±ú;
-//NbrÊÇ´ò¿ªµÄ¶Ë¿ÚºÅ£¬´Ó1¿ªÊ¼£¬ÒÀ´ÎÎª2/3/4...£¬×î´ó126
-//Èç¹ûµçÄÔÉÏÖ»²åÉÏÒ»¸öË«Í·Ä£¿é£¬Ôò´ò¿ª¶Ë¿ÚºÅÎª1
+/*******************æ‰“å¼€å…³é—­å‡½æ•°****************************/
+//æ‰“å¼€ç«¯å£è·å–å¥æŸ„;
+//Nbræ˜¯æ‰“å¼€çš„ç«¯å£å·ï¼Œä»1å¼€å§‹ï¼Œä¾æ¬¡ä¸º2/3/4...ï¼Œæœ€å¤§126
+//å¦‚æœç”µè„‘ä¸Šåªæ’ä¸Šä¸€ä¸ªåŒå¤´æ¨¡å—ï¼Œåˆ™æ‰“å¼€ç«¯å£å·ä¸º1
 HANDLE M_Open(int Nbr)
 {
 	libusb_device_handle *LibDev;
@@ -36,8 +36,8 @@ int M_Close(HANDLE m_hdl)
 	return -1;
 }
 
-/***********¼üÅÌ²Ù×÷º¯Êı;ÒÔÏÂº¯ÊıÖĞµÄm_hdlÊÇÖ¸M_Open·µ»ØµÄ¾ä±ú*******/
-//µ¥»÷(°´ÏÂºóÁ¢¿Ìµ¯Æğ)°´¼ü  //HidKeyCode: ¼üÅÌÂë; Nbr: °´ÏÂ´ÎÊı
+/***********é”®ç›˜æ“ä½œå‡½æ•°;ä»¥ä¸‹å‡½æ•°ä¸­çš„m_hdlæ˜¯æŒ‡M_Openè¿”å›çš„å¥æŸ„*******/
+//å•å‡»(æŒ‰ä¸‹åç«‹åˆ»å¼¹èµ·)æŒ‰é”®  //HidKeyCode: é”®ç›˜ç ; Nbr: æŒ‰ä¸‹æ¬¡æ•°
 int M_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 {
     if(m_hdl == NULL) {
@@ -59,7 +59,7 @@ int M_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
     return 0;
 }
 
-//°´ÏÂÄ³¸ö°´¼ü²»µ¯Æğ        //HidKeyCode: ¼üÅÌÂë
+//æŒ‰ä¸‹æŸä¸ªæŒ‰é”®ä¸å¼¹èµ·        //HidKeyCode: é”®ç›˜ç 
 int M_KeyDown(HANDLE m_hdl, int HidKeyCode)
 {
     if(m_hdl == NULL) {
@@ -78,7 +78,7 @@ int M_KeyDown(HANDLE m_hdl, int HidKeyCode)
 
 	//OutputDebugStringA("KeyDownF");
     l_hUdev->CurrKbOp[2] = 0;
-	if ( (HidKeyCode >= Keyboard_LeftControl) && (HidKeyCode <= Keyboard_RightWindows)) {//ÕâÊÇ¿ØÖÆÂë
+	if ( (HidKeyCode >= Keyboard_LeftControl) && (HidKeyCode <= Keyboard_RightWindows)) {//è¿™æ˜¯æ§åˆ¶ç 
 		KbPos = HidKeyCode - Keyboard_LeftControl;
 		l_hUdev->CurrKbOp[1] |= (1 << KbPos);
 	    if (((l_hUdev->CurrKbOp[0] & 0x80) == 0) ||      //bit7 == 0
@@ -87,12 +87,12 @@ int M_KeyDown(HANDLE m_hdl, int HidKeyCode)
 			l_hUdev->CurrKbOp[0] = 0x83;
 			l_hUdev->CurrKbOp[3] = 0;
 		}
-		else {//²»¸Ä±ä
+		else {//ä¸æ”¹å˜
 		}
 	}
 	else {
 	    if (((l_hUdev->CurrKbOp[0] & 0x80) == 0) ||      //bit7 == 0
-		    ((l_hUdev->CurrKbOp[0] & 0x7F) > 8)  ||      //err
+		    ((l_hUdev->CurrKbOp[0] & 0x7F) > 8)  ||      // err
 		    ((l_hUdev->CurrKbOp[0] & 0x7F) < 3) ) {      //err
 			l_hUdev->CurrKbOp[0] = 0x83;
 			l_hUdev->CurrKbOp[1] = 0;
@@ -105,13 +105,13 @@ int M_KeyDown(HANDLE m_hdl, int HidKeyCode)
 		            l_hUdev->CurrKbOp[0] = 0x80 | KbPos;
 		            break;
 		        }
-		        if (l_hUdev->CurrKbOp[KbPos] == HidKeyCode) {//¸Ã°´¼üÒÑ¾­°´ÏÂ
+		        if (l_hUdev->CurrKbOp[KbPos] == HidKeyCode) {//è¯¥æŒ‰é”®å·²ç»æŒ‰ä¸‹
 		            break;
 		        }
 		    }
-		    if (KbPos == 9) {//Ã»ÓĞÕÒµ½free position
-		        l_hUdev->CurrKbOp[8] = HidKeyCode; //Ç¿ĞĞÕ¼¾İ×îºóÒ»¸öposition
-		        l_hUdev->CurrKbOp[0] = 0x88; //Ç¿ĞĞÕ¼¾İ×îºóÒ»¸öposition
+		    if (KbPos == 9) {//æ²¡æœ‰æ‰¾åˆ°free position
+		        l_hUdev->CurrKbOp[8] = HidKeyCode; //å¼ºè¡Œå æ®æœ€åä¸€ä¸ªposition
+		        l_hUdev->CurrKbOp[0] = 0x88; //å¼ºè¡Œå æ®æœ€åä¸€ä¸ªposition
 		    }
 		}
 	}
@@ -126,7 +126,7 @@ int M_KeyDown(HANDLE m_hdl, int HidKeyCode)
 
     return 0;
 }
-//µ¯ÆğÄ³¸ö°´¼ü              //HidKeyCode: ¼üÅÌÂë
+//å¼¹èµ·æŸä¸ªæŒ‰é”®              //HidKeyCode: é”®ç›˜ç 
 int M_KeyUp(HANDLE m_hdl, int HidKeyCode)
 {
     if(m_hdl == NULL) {
@@ -145,7 +145,7 @@ int M_KeyUp(HANDLE m_hdl, int HidKeyCode)
 
 	//OutputDebugStringA("KeyUpF");
     l_hUdev->CurrKbOp[2] = 0;
-	if ( (HidKeyCode >= Keyboard_LeftControl) && (HidKeyCode <= Keyboard_RightWindows)) {//ÕâÊÇ¿ØÖÆÂë
+	if ( (HidKeyCode >= Keyboard_LeftControl) && (HidKeyCode <= Keyboard_RightWindows)) {//è¿™æ˜¯æ§åˆ¶ç 
 		KbPos = HidKeyCode - Keyboard_LeftControl;
 		l_hUdev->CurrKbOp[1] &= (~(1 << KbPos));
 	    if (((l_hUdev->CurrKbOp[0] & 0x80) == 0) ||      //bit7 == 0; err or M_ReleaseAllKey just now
@@ -153,7 +153,7 @@ int M_KeyUp(HANDLE m_hdl, int HidKeyCode)
 		    ((l_hUdev->CurrKbOp[0] & 0x7F) < 3)) {       //err
 		    memset(l_hUdev->CurrKbOp, 0, 9);
 		}
-		else {//²»¸Ä±ä
+		else {//ä¸æ”¹å˜
 		}
 	}
 	else {
@@ -165,22 +165,22 @@ int M_KeyUp(HANDLE m_hdl, int HidKeyCode)
 		else {
 		    int CurrCmdLen = l_hUdev->CurrKbOp[0] & 0x7F;
 		    for (KbPos = 3; KbPos <= CurrCmdLen; KbPos++) {//scan [3]~[LenOfCmd]
-		        if (l_hUdev->CurrKbOp[KbPos] == HidKeyCode) {//ÕÒµ½¸Ã°´¼ü
+		        if (l_hUdev->CurrKbOp[KbPos] == HidKeyCode) {//æ‰¾åˆ°è¯¥æŒ‰é”®
 		            l_hUdev->CurrKbOp[KbPos] = 0;
 		            l_hUdev->CurrKbOp[0] = 0x80 | (KbPos - 1);
-        		    //½«ºóÃæµÄ°´¼üÒÆµ½Ç°ÃæÀ´
+        		    //å°†åé¢çš„æŒ‰é”®ç§»åˆ°å‰é¢æ¥
         		    int CurrMovPos;
         		    for (CurrMovPos = KbPos + 1; CurrMovPos <= CurrCmdLen; CurrMovPos++) {
             	        if (l_hUdev->CurrKbOp[CurrMovPos] == 0) {//free position
            	                break;
             	        }
-            	        else {//ÒÆµ½ºóÃæÈ¥
+            	        else {//ç§»åˆ°åé¢å»
             	            l_hUdev->CurrKbOp[CurrMovPos - 1] = l_hUdev->CurrKbOp[CurrMovPos];
             	            l_hUdev->CurrKbOp[CurrMovPos] = 0;
             	            l_hUdev->CurrKbOp[0]++;
             	        }
         		    }
-    	            if ((l_hUdev->CurrKbOp[0] & 0x7F) < 3) {//Ö»Ê£ÏÂ¿ØÖÆÂë
+    	            if ((l_hUdev->CurrKbOp[0] & 0x7F) < 3) {//åªå‰©ä¸‹æ§åˆ¶ç 
     	                l_hUdev->CurrKbOp[0] = 0x83;
     	                l_hUdev->CurrKbOp[3] = 0;
                 		if (l_hUdev->CurrKbOp[1] == 0) {
@@ -208,7 +208,7 @@ int M_KeyUp(HANDLE m_hdl, int HidKeyCode)
 
     return 0;
 }
-//¶ÁÈ¡°´¼ü×´Ì¬              //HidKeyCode: ¼üÅÌÂë //·µ»Ø 0: µ¯Æğ×´Ì¬£»1:°´ÏÂ×´Ì¬£»-1: Ê§°Ü(¶Ë¿ÚÎ´´ò¿ª)
+//è¯»å–æŒ‰é”®çŠ¶æ€              //HidKeyCode: é”®ç›˜ç  //è¿”å› 0: å¼¹èµ·çŠ¶æ€ï¼›1:æŒ‰ä¸‹çŠ¶æ€ï¼›-1: å¤±è´¥(ç«¯å£æœªæ‰“å¼€)
 int M_KeyState(HANDLE m_hdl, int HidKeyCode)
 {
 	int KbPos;
@@ -221,7 +221,7 @@ int M_KeyState(HANDLE m_hdl, int HidKeyCode)
 	    ((HidKeyCode < Keyboard_LeftControl) && (HidKeyCode > Keyboard_Application)) ) {
         return -1;
 	}
-	if ( (HidKeyCode >= Keyboard_LeftControl) && (HidKeyCode <= Keyboard_RightWindows)) {//ÕâÊÇ¿ØÖÆÂë
+	if ( (HidKeyCode >= Keyboard_LeftControl) && (HidKeyCode <= Keyboard_RightWindows)) {//è¿™æ˜¯æ§åˆ¶ç 
 		KbPos = HidKeyCode - Keyboard_LeftControl;
 		if (l_hUdev->CurrKbOp[1] & (1 << KbPos)) {
 			return 1;
@@ -230,7 +230,7 @@ int M_KeyState(HANDLE m_hdl, int HidKeyCode)
 	else {
 		int CurrCmdLen = l_hUdev->CurrKbOp[0] & 0x7F;
 		for (KbPos = 3; KbPos <= CurrCmdLen; KbPos++) {//scan [3]~[LenOfCmd]
-		    if (l_hUdev->CurrKbOp[KbPos] == HidKeyCode) {//ÕÒµ½¸Ã°´¼ü
+		    if (l_hUdev->CurrKbOp[KbPos] == HidKeyCode) {//æ‰¾åˆ°è¯¥æŒ‰é”®
 				return 1;
 			}
 		}
@@ -238,7 +238,7 @@ int M_KeyState(HANDLE m_hdl, int HidKeyCode)
     return 0;
 }
 
-//µ¥»÷(°´ÏÂºóÁ¢¿Ìµ¯Æğ)°´¼ü  //KeyCode: ¼üÅÌÂë; Nbr: °´ÏÂ´ÎÊı
+//å•å‡»(æŒ‰ä¸‹åç«‹åˆ»å¼¹èµ·)æŒ‰é”®  //KeyCode: é”®ç›˜ç ; Nbr: æŒ‰ä¸‹æ¬¡æ•°
 int M_KeyPress2(HANDLE m_hdl, int KeyCode, int Nbr)
 {
     if(m_hdl == NULL) {
@@ -250,7 +250,7 @@ int M_KeyPress2(HANDLE m_hdl, int KeyCode, int Nbr)
     return(M_KeyPress(m_hdl, VKEY2HIDCODE[KeyCode], Nbr));
 }
 
-//°´ÏÂÄ³¸ö°´¼ü²»µ¯Æğ        //KeyCode: ¼üÅÌÂë
+//æŒ‰ä¸‹æŸä¸ªæŒ‰é”®ä¸å¼¹èµ·        //KeyCode: é”®ç›˜ç 
 int M_KeyDown2(HANDLE m_hdl, int KeyCode)
 {
     if(m_hdl == NULL) {
@@ -261,7 +261,7 @@ int M_KeyDown2(HANDLE m_hdl, int KeyCode)
     }
     return(M_KeyDown(m_hdl, VKEY2HIDCODE[KeyCode]));
 }
-//µ¯ÆğÄ³¸ö°´¼ü              //KeyCode: ¼üÅÌÂë
+//å¼¹èµ·æŸä¸ªæŒ‰é”®              //KeyCode: é”®ç›˜ç 
 int M_KeyUp2(HANDLE m_hdl, int KeyCode)
 {
     if(m_hdl == NULL) {
@@ -272,7 +272,7 @@ int M_KeyUp2(HANDLE m_hdl, int KeyCode)
     }
 	return(M_KeyUp(m_hdl, VKEY2HIDCODE[KeyCode]));
 }
-//¶ÁÈ¡°´¼ü×´Ì¬              //KeyCode: ¼üÅÌÂë //·µ»Ø 0: µ¯Æğ×´Ì¬£»1:°´ÏÂ×´Ì¬£»-1: Ê§°Ü(¶Ë¿ÚÎ´´ò¿ª)
+//è¯»å–æŒ‰é”®çŠ¶æ€              //KeyCode: é”®ç›˜ç  //è¿”å› 0: å¼¹èµ·çŠ¶æ€ï¼›1:æŒ‰ä¸‹çŠ¶æ€ï¼›-1: å¤±è´¥(ç«¯å£æœªæ‰“å¼€)
 int M_KeyState2(HANDLE m_hdl, int KeyCode)
 {
     if(m_hdl == NULL) {
@@ -284,7 +284,7 @@ int M_KeyState2(HANDLE m_hdl, int KeyCode)
 	return(M_KeyState(m_hdl, VKEY2HIDCODE[KeyCode]));
 
 }
-//µ¯ÆğËùÓĞ°´¼ü
+//å¼¹èµ·æ‰€æœ‰æŒ‰é”®
 int M_ReleaseAllKey(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -303,7 +303,7 @@ int M_ReleaseAllKey(HANDLE m_hdl)
 			0);
     return 0;
 }
-//¶ÁÈ¡Ğ¡¼üÅÌNumLockµÆµÄ×´Ì¬ //·µ»Ø 0:Ãğ£»1:ÁÁ£»-1: Ê§°Ü
+//è¯»å–å°é”®ç›˜NumLockç¯çš„çŠ¶æ€ //è¿”å› 0:ç­ï¼›1:äº®ï¼›-1: å¤±è´¥
 int M_NumLockLedState(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -330,7 +330,7 @@ int M_NumLockLedState(HANDLE m_hdl)
         return 0;
     }
 }
-//¶ÁÈ¡CapsLockµÆµÄ×´Ì¬ //·µ»Ø 0:Ãğ£»1:ÁÁ£»-1: Ê§°Ü
+//è¯»å–CapsLockç¯çš„çŠ¶æ€ //è¿”å› 0:ç­ï¼›1:äº®ï¼›-1: å¤±è´¥
 int M_CapsLockLedState(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -357,7 +357,7 @@ int M_CapsLockLedState(HANDLE m_hdl)
         return 0;
     }
 }
-//¶ÁÈ¡ScrollLockµÆµÄ×´Ì¬ //·µ»Ø 0:Ãğ£»1:ÁÁ£»-1: Ê§°Ü
+//è¯»å–ScrollLockç¯çš„çŠ¶æ€ //è¿”å› 0:ç­ï¼›1:äº®ï¼›-1: å¤±è´¥
 int M_ScrollLockLedState(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -384,8 +384,8 @@ int M_ScrollLockLedState(HANDLE m_hdl)
         return 0;
     }
 }
-/***********Êó±ê²Ù×÷º¯Êı;ÒÔÏÂº¯ÊıÖĞµÄm_hdlÊÇÖ¸M_Open·µ»ØµÄ¾ä±ú*******/
-//×ó¼üµ¥»÷   //Nbr: ×ó¼üÔÚµ±Ç°Î»ÖÃµ¥»÷´ÎÊı
+/***********é¼ æ ‡æ“ä½œå‡½æ•°;ä»¥ä¸‹å‡½æ•°ä¸­çš„m_hdlæ˜¯æŒ‡M_Openè¿”å›çš„å¥æŸ„*******/
+//å·¦é”®å•å‡»   //Nbr: å·¦é”®åœ¨å½“å‰ä½ç½®å•å‡»æ¬¡æ•°
 int M_LeftClick(HANDLE m_hdl,int Nbr)
 {
     if(m_hdl == NULL) {
@@ -406,7 +406,7 @@ int M_LeftClick(HANDLE m_hdl,int Nbr)
     }
     return 0;
 }
-//×ó¼üË«»÷   //Nbr: ×ó¼üÔÚµ±Ç°Î»ÖÃË«»÷´ÎÊı
+//å·¦é”®åŒå‡»   //Nbr: å·¦é”®åœ¨å½“å‰ä½ç½®åŒå‡»æ¬¡æ•°
 int M_LeftDoubleClick(HANDLE m_hdl,int Nbr)
 {
     if(m_hdl == NULL) {
@@ -427,7 +427,7 @@ int M_LeftDoubleClick(HANDLE m_hdl,int Nbr)
     }
     return 0;
 }
-//°´ÏÂ×ó¼ü²»µ¯Æğ
+//æŒ‰ä¸‹å·¦é”®ä¸å¼¹èµ·
 int M_LeftDown(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -453,7 +453,7 @@ int M_LeftDown(HANDLE m_hdl)
 
     return 0;
 }
-//µ¯Æğ×ó¼ü
+//å¼¹èµ·å·¦é”®
 int M_LeftUp(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -480,7 +480,7 @@ int M_LeftUp(HANDLE m_hdl)
 
     return 0;
 }
-//ÓÒ¼üµ¥»÷   //Nbr: ×ó¼üÔÚµ±Ç°Î»ÖÃµ¥»÷´ÎÊı
+//å³é”®å•å‡»   //Nbr: å·¦é”®åœ¨å½“å‰ä½ç½®å•å‡»æ¬¡æ•°
 int M_RightClick(HANDLE m_hdl,int Nbr)
 {
     if(m_hdl == NULL) {
@@ -501,7 +501,7 @@ int M_RightClick(HANDLE m_hdl,int Nbr)
     }
     return 0;
 }
-//°´ÏÂÓÒ¼ü²»µ¯Æğ
+//æŒ‰ä¸‹å³é”®ä¸å¼¹èµ·
 int M_RightDown(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -527,7 +527,7 @@ int M_RightDown(HANDLE m_hdl)
 
     return 0;
 }
-//µ¯ÆğÓÒ¼ü
+//å¼¹èµ·å³é”®
 int M_RightUp(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -553,7 +553,7 @@ int M_RightUp(HANDLE m_hdl)
 
     return 0;
 }
-//ÖĞ¼üµ¥»÷   //Nbr: ×ó¼üÔÚµ±Ç°Î»ÖÃµ¥»÷´ÎÊı
+//ä¸­é”®å•å‡»   //Nbr: å·¦é”®åœ¨å½“å‰ä½ç½®å•å‡»æ¬¡æ•°
 int M_MiddleClick(HANDLE m_hdl,int Nbr)
 {
     if(m_hdl == NULL) {
@@ -574,7 +574,7 @@ int M_MiddleClick(HANDLE m_hdl,int Nbr)
     }
     return 0;
 }
-//°´ÏÂÖĞ¼ü²»µ¯Æğ
+//æŒ‰ä¸‹ä¸­é”®ä¸å¼¹èµ·
 int M_MiddleDown(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -600,7 +600,7 @@ int M_MiddleDown(HANDLE m_hdl)
 
     return 0;
 }
-//µ¯ÆğÖĞ¼ü
+//å¼¹èµ·ä¸­é”®
 int M_MiddleUp(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -628,7 +628,7 @@ int M_MiddleUp(HANDLE m_hdl)
 
     return 0;
 }
-//¹ö¶¯Êó±ê¹öÂÖ;  Nbr: ¹ö¶¯Á¿,  ÎªÕı,ÏòÉÏ¹ö¶¯£»Îª¸º, ÏòÏÂ¹ö¶¯;
+//æ»šåŠ¨é¼ æ ‡æ»šè½®;  Nbr: æ»šåŠ¨é‡,  ä¸ºæ­£,å‘ä¸Šæ»šåŠ¨ï¼›ä¸ºè´Ÿ, å‘ä¸‹æ»šåŠ¨;
 int M_MouseWheel(HANDLE m_hdl,int Nbr)
 {
     if(m_hdl == NULL) {
@@ -671,7 +671,7 @@ int M_MouseWheel(HANDLE m_hdl,int Nbr)
 
     return 0;
 }
-//DLL ÄÚ²¿µ÷ÓÃµÄMoveR ÎªÁËÊµÏÖ¶àÏß³Ìµ÷ÓÃ
+//DLL å†…éƒ¨è°ƒç”¨çš„MoveR ä¸ºäº†å®ç°å¤šçº¿ç¨‹è°ƒç”¨
 int M_InternalMoveR(HANDLE m_hdl,int x, int y)
 {
     if(m_hdl == NULL) {
@@ -695,7 +695,7 @@ int M_InternalMoveR(HANDLE m_hdl,int x, int y)
     }
 	while (x || y) {
 		l_hUdev->CurrMouseOp[0] = 0x04;
-		//¼ÆËãXÎ»ÒÆ£¬Ã¿´ÎÒÆ¶¯¾àÀërnd
+		//è®¡ç®—Xä½ç§»ï¼Œæ¯æ¬¡ç§»åŠ¨è·ç¦»rnd
 		luc_Rnd = M_RandDomNbr(100, 127);
 		lui_Abs = abs(x);
 		if (x == 0) {
@@ -718,7 +718,7 @@ int M_InternalMoveR(HANDLE m_hdl,int x, int y)
 			}
 		}
 		x -= (signed char)(l_hUdev->CurrMouseOp[2]);
-		//¼ÆËãYÎ»ÒÆ£¬Ã¿´ÎÒÆ¶¯¾àÀërnd
+		//è®¡ç®—Yä½ç§»ï¼Œæ¯æ¬¡ç§»åŠ¨è·ç¦»rnd
 		luc_Rnd = M_RandDomNbr(100, 127);
 		lui_Abs = abs(y);
 		if (y == 0) {
@@ -763,8 +763,8 @@ int M_InternalMoveR(HANDLE m_hdl,int x, int y)
     return 0;
 }
 
-#define MIN_STEP 100 //Ã¿´ÎÖÁÉÙÒÆ¶¯µÄÏñËØ¸öÊı£¬×î´ó100
-//´Óµ±Ç°Î»ÖÃÒÆ¶¯Êó±ê    x: x·½Ïò£¨ºáÖá£©µÄ¾àÀë; y: y·½Ïò£¨×İÖá£©µÄ¾àÀë
+#define MIN_STEP 100 //æ¯æ¬¡è‡³å°‘ç§»åŠ¨çš„åƒç´ ä¸ªæ•°ï¼Œæœ€å¤§100
+//ä»å½“å‰ä½ç½®ç§»åŠ¨é¼ æ ‡    x: xæ–¹å‘ï¼ˆæ¨ªè½´ï¼‰çš„è·ç¦»; y: yæ–¹å‘ï¼ˆçºµè½´ï¼‰çš„è·ç¦»
 int M_MoveR(HANDLE m_hdl,int x, int y)
 {
     if(m_hdl == NULL) {
@@ -779,7 +779,7 @@ int M_MoveR(HANDLE m_hdl,int x, int y)
     return 0;
 }
 
-//ÒÆ¶¯Êó±êµ½Ö¸¶¨×ø±ê    x: x·½Ïò£¨ºáÖá£©µÄ×ø±ê; y: y·½Ïò£¨×İÖá£©µÄ×ø±ê
+//ç§»åŠ¨é¼ æ ‡åˆ°æŒ‡å®šåæ ‡    x: xæ–¹å‘ï¼ˆæ¨ªè½´ï¼‰çš„åæ ‡; y: yæ–¹å‘ï¼ˆçºµè½´ï¼‰çš„åæ ‡
 int M_MoveTo(HANDLE m_hdl,int x, int y)
 {
     if ((m_hdl == NULL) || (x < 0) || (y < 0)) {
@@ -788,10 +788,10 @@ int M_MoveTo(HANDLE m_hdl,int x, int y)
 	PUDEVHANDLE l_hUdev = (PUDEVHANDLE)m_hdl;
 
     if (l_hUdev->Mouse1stMovto == 0) {
-        if (M_InternalMoveR(m_hdl, -3000, -3000) != 0) {//ÒÆ¶¯µ½Ô­µã
+        if (M_InternalMoveR(m_hdl, -3000, -3000) != 0) {//ç§»åŠ¨åˆ°åŸç‚¹
             return -1;
         }
-        if (M_InternalMoveR(m_hdl, x, y) != 0) {//ÒÆ¶¯µ½Ô­µã
+        if (M_InternalMoveR(m_hdl, x, y) != 0) {//ç§»åŠ¨åˆ°åŸç‚¹
             return -1;
         }
         l_hUdev->Mouse1stMovto = 1;
@@ -816,7 +816,7 @@ int M_MoveTo(HANDLE m_hdl,int x, int y)
     return 0;
 }
 
-//½«mouseÒÆ¶¯µ½Ô­µã
+//å°†mouseç§»åŠ¨åˆ°åŸç‚¹
 int M_ResetMousePos(HANDLE m_hdl)
 {
     if (m_hdl == NULL) {
@@ -842,7 +842,7 @@ int M_GetCurrMousePos(HANDLE m_hdl,int *x, int *y)
     return 0;
 }
 
-//ÊÍ·ÅËùÓĞÊó±êµÄ°´¼ü
+//é‡Šæ”¾æ‰€æœ‰é¼ æ ‡çš„æŒ‰é”®
 int M_ReleaseAllMouse(HANDLE m_hdl)
 {
     if(m_hdl == NULL) {
@@ -868,7 +868,7 @@ int M_ReleaseAllMouse(HANDLE m_hdl)
     return 0;
 }
 
-//±»¿Ø»úµÄ·Ö±æÂÊ£¬Ö»ÓĞÉèÖÃºó²ÅÄÜÊ¹ÓÃ¾ø¶Ô×ø±êÒÆ¶¯£»Èç¹ûÃ»ÓĞÉèÖÃ£¬ÔòÊ¹ÓÃ±¾»ú·Ö±æÂÊ
+//è¢«æ§æœºçš„åˆ†è¾¨ç‡ï¼Œåªæœ‰è®¾ç½®åæ‰èƒ½ä½¿ç”¨ç»å¯¹åæ ‡ç§»åŠ¨ï¼›å¦‚æœæ²¡æœ‰è®¾ç½®ï¼Œåˆ™ä½¿ç”¨æœ¬æœºåˆ†è¾¨ç‡
 int M_ResolutionUsed(HANDLE m_hdl, int x, int y)
 {
     if ((m_hdl == NULL) || (x < 0) || (y < 0)) {
@@ -893,7 +893,7 @@ int M_InternalMoveTo3(HANDLE m_hdl, int x, int y)
 	unsigned long fact = (HW_MAX_RES/l_hUdev->Cx)/4;
 
 	ucp_cmd[0] = 6;
-	ucp_cmd[1] = 0; //Õâ¸ö¾ø¶ÔÊó±ê²»¹Ü×óÖĞÓÒ¼ü
+	ucp_cmd[1] = 0; //è¿™ä¸ªç»å¯¹é¼ æ ‡ä¸ç®¡å·¦ä¸­å³é”®
 	temp1 = (HW_MAX_RES * x)/l_hUdev->Cx + fact;
 	if (temp1 > HW_MAX_RES) {
 		temp1 = HW_MAX_RES;
@@ -901,7 +901,7 @@ int M_InternalMoveTo3(HANDLE m_hdl, int x, int y)
 	ucp_cmd[2] = (unsigned char)(temp1);
 	ucp_cmd[3] = (unsigned char)(temp1 >> 8);
 	temp2 = (HW_MAX_RES * y)/l_hUdev->Cy + fact;
-	if ((temp1 == 0) && (temp2 == 0)) {//±ÜÃâÁ½¸ö¶¼ÊÇ0£¬x=y=0£¬Ôò²»»áÓĞÒÆ¶¯£¬±ØĞëÓĞÒ»¸öÊÇ1
+	if ((temp1 == 0) && (temp2 == 0)) {//é¿å…ä¸¤ä¸ªéƒ½æ˜¯0ï¼Œx=y=0ï¼Œåˆ™ä¸ä¼šæœ‰ç§»åŠ¨ï¼Œå¿…é¡»æœ‰ä¸€ä¸ªæ˜¯1
 		temp2 = fact;
 	}
 	if (temp2 > HW_MAX_RES) {
@@ -925,7 +925,7 @@ int M_InternalMoveTo3(HANDLE m_hdl, int x, int y)
     return 0;
 }
 
-//¾ø¶Ô×ø±êÒÆ¶¯
+//ç»å¯¹åæ ‡ç§»åŠ¨
 int M_MoveTo3(HANDLE m_hdl, int x, int y)
 {
     if ((m_hdl == NULL) || (x < 0) || (y < 0)) {
@@ -944,25 +944,25 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
 		return -4;
 	}
 
-	if (l_hUdev->Mouse1stMovto == 0) {//µÚÒ»´ÎÒÆ¶¯, Ö±½ÓÒÆ¶¯£¬Ã»ÓĞÇúÏß
+	if (l_hUdev->Mouse1stMovto == 0) {//ç¬¬ä¸€æ¬¡ç§»åŠ¨, ç›´æ¥ç§»åŠ¨ï¼Œæ²¡æœ‰æ›²çº¿
 	    retcode = M_InternalMoveTo3(m_hdl, x, y);
 	    return retcode;
     }
-    else {//´ÓÉÏ´Î¼ÇÂ¼µÄÎ»ÖÃ¿ªÊ¼ÒÆ¶¯
+    else {//ä»ä¸Šæ¬¡è®°å½•çš„ä½ç½®å¼€å§‹ç§»åŠ¨
         int x_dis = x - l_hUdev->CurrMouseAbsPosX;
         int y_dis = y - l_hUdev->CurrMouseAbsPosY;
-        if ((x_dis == 0) && (y_dis == 0)) { //ÓĞ¿ÉÄÜÊÖ¹¤ ÒÆ¶¯ÁËÊó±ê£¬ËùÒÔ»¹ÊÇĞèÒª¼ÌĞøÖ´ĞĞ¾ø¶ÔÒÆ¶¯
+        if ((x_dis == 0) && (y_dis == 0)) { //æœ‰å¯èƒ½æ‰‹å·¥ ç§»åŠ¨äº†é¼ æ ‡ï¼Œæ‰€ä»¥è¿˜æ˜¯éœ€è¦ç»§ç»­æ‰§è¡Œç»å¯¹ç§»åŠ¨
     	    retcode = M_InternalMoveTo3(m_hdl, x, y);
     	    return retcode;
         }
-        //1 È·¶¨ÇúÏßÊÇË³Ê±Õë»¹ÊÇÄæÊ±Õë
+        //1 ç¡®å®šæ›²çº¿æ˜¯é¡ºæ—¶é’ˆè¿˜æ˜¯é€†æ—¶é’ˆ
         int clockwise = 0;
         if (M_RandDomNbr(1, 100) % 2 == 0) {
             clockwise = 1;
         }
-        //2 ¸ù¾İÒÆ¶¯¾àÀë£¬È·¶¨ÇúÏßÇúÂÊ(ÖĞĞÄµãÆ«ÀëÏñËØÊı)
-        int len = (double)(sqrt((double)(x_dis*x_dis + y_dis*y_dis))) + 0.5; //ËÄÉáÎåÈë
-        int theta = len/M_RandDomNbr(10,50); // ÍäÇú³Ì¶È1/?, ÖĞ¼äµãµÄÆ«ÒÆ
+        //2 æ ¹æ®ç§»åŠ¨è·ç¦»ï¼Œç¡®å®šæ›²çº¿æ›²ç‡(ä¸­å¿ƒç‚¹åç¦»åƒç´ æ•°)
+        int len = (double)(sqrt((double)(x_dis*x_dis + y_dis*y_dis))) + 0.5; //å››èˆäº”å…¥
+        int theta = len/M_RandDomNbr(10,50); // å¼¯æ›²ç¨‹åº¦1/?, ä¸­é—´ç‚¹çš„åç§»
         if (theta < 2) {
             theta = M_RandDomNbr(2, 5);
         }
@@ -976,17 +976,17 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
             theta = theta * (-1);
         }
     	int x_currpos, y_currpos, x_prevpos, y_prevpos;
-        x_currpos = y_currpos = x_prevpos = y_prevpos = 0; //µ±Ç°µãÎªÔ­µã½¨Á¢×ø±ê£¬ÔÚx y·½ÏòÒÑ¾­×ßÁË¶à³¤
-        int x_oridest = x_dis; //±£´æ×î³õµÄx destination
-        int y_oridest = y_dis; //±£´æ×î³õµÄy destination
+        x_currpos = y_currpos = x_prevpos = y_prevpos = 0; //å½“å‰ç‚¹ä¸ºåŸç‚¹å»ºç«‹åæ ‡ï¼Œåœ¨x yæ–¹å‘å·²ç»èµ°äº†å¤šé•¿
+        int x_oridest = x_dis; //ä¿å­˜æœ€åˆçš„x destination
+        int y_oridest = y_dis; //ä¿å­˜æœ€åˆçš„y destination
         float t;
         int x_mov, y_mov;
         int xc, yc;
         unsigned char luc_Rnd;
         if (abs(x_dis) >= abs(y_dis)) {
-            //3 È·¶¨¿ØÖÆµãÎ»ÖÃ, ±ØĞëÊÇÔÚxÒ»°ëÎ»ÖÃ£¬¼ò»¯¼ÆËã
-            xc = x_oridest/2; //¿ØÖÆµãxÎ»ÖÃ
-            yc = y_oridest/2 + theta; //¿ØÖÆµãyÎ»ÖÃ
+            //3 ç¡®å®šæ§åˆ¶ç‚¹ä½ç½®, å¿…é¡»æ˜¯åœ¨xä¸€åŠä½ç½®ï¼Œç®€åŒ–è®¡ç®—
+            xc = x_oridest/2; //æ§åˆ¶ç‚¹xä½ç½®
+            yc = y_oridest/2 + theta; //æ§åˆ¶ç‚¹yä½ç½®
             while (abs(x_dis)) {
                 if ((abs(x_dis) < MIN_STEP * 2) && (abs(x_dis) > MIN_STEP)) {
                     luc_Rnd = M_RandDomNbr(abs(x_dis)/2, abs(x_dis)/2 + MIN_STEP/2);
@@ -994,7 +994,7 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
                 else {
                     luc_Rnd = M_RandDomNbr(MIN_STEP, MIN_STEP + 27);
                 }
-                if (luc_Rnd >= abs(x_dis)) { //Ö±½ÓÖ±ÏßÒÆ¶¯
+                if (luc_Rnd >= abs(x_dis)) { //ç›´æ¥ç›´çº¿ç§»åŠ¨
                     x_mov = x_dis;
                     y_mov = y_dis;
                     l_hUdev->CurrMouseAbsPosX = x;
@@ -1002,10 +1002,10 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
                 }
                 else {
                     if (x_dis > 0) {
-                        x_currpos += luc_Rnd; //×¼±¸ËãyÓÃ
+                        x_currpos += luc_Rnd; //å‡†å¤‡ç®—yç”¨
                     }
                     else {
-                        x_currpos -= luc_Rnd; //×¼±¸ËãyÓÃ
+                        x_currpos -= luc_Rnd; //å‡†å¤‡ç®—yç”¨
                     }
                     t = ((float)x_currpos)/x_oridest;
                     y_currpos = 2 * t * (1 - t) * yc + t * t * y_oridest + 0.5;
@@ -1019,7 +1019,7 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
                         y_mov = (y_mov > 0) ? 126 : -126;
                         y_currpos = y_prevpos + y_mov;
                     }
-                    if (l_hUdev->Mouse1stMovto == 1) { //ÅĞ¶ÏÊÇ·ñ»¹ÔÚÆÁÄ»ÄÚ
+                    if (l_hUdev->Mouse1stMovto == 1) { //åˆ¤æ–­æ˜¯å¦è¿˜åœ¨å±å¹•å†…
                 		if ((l_hUdev->CurrMouseAbsPosX + x_mov) < 0) {
                 			x_mov = 0 - l_hUdev->CurrMouseAbsPosX;
                 			l_hUdev->CurrMouseAbsPosX = 0;
@@ -1048,15 +1048,15 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
          		if (abs(x_dis) || abs(y_dis)) {
         			M_DelayRandom(10, 20);
         		}
-     		    if (abs(x_mov) == 0) {//ÒÑ¾­¿¿½ü±ßÔµ
+     		    if (abs(x_mov) == 0) {//å·²ç»é è¿‘è¾¹ç¼˜
         		    break;
         		}
             }
     	}
     	else {//x_dis<y_dis
-            //3 È·¶¨¿ØÖÆµãÎ»ÖÃ, ±ØĞëÊÇÔÚyÒ»°ëÎ»ÖÃ£¬¼ò»¯¼ÆËã
-            yc = y_oridest/2; //¿ØÖÆµãxÎ»ÖÃ
-            xc = x_oridest/2 + theta; //¿ØÖÆµãyÎ»ÖÃ
+            //3 ç¡®å®šæ§åˆ¶ç‚¹ä½ç½®, å¿…é¡»æ˜¯åœ¨yä¸€åŠä½ç½®ï¼Œç®€åŒ–è®¡ç®—
+            yc = y_oridest/2; //æ§åˆ¶ç‚¹xä½ç½®
+            xc = x_oridest/2 + theta; //æ§åˆ¶ç‚¹yä½ç½®
             while (abs(y_dis)) {
                 if ((abs(y_dis) < MIN_STEP * 2) && (abs(y_dis) > MIN_STEP)) {
                     luc_Rnd = M_RandDomNbr(abs(y_dis)/2, abs(y_dis)/2 + MIN_STEP/2);
@@ -1064,7 +1064,7 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
                 else {
                     luc_Rnd = M_RandDomNbr(MIN_STEP, MIN_STEP + 27);
                 }
-                if (luc_Rnd >= abs(y_dis)) { //Ö±½ÓÖ±ÏßÒÆ¶¯
+                if (luc_Rnd >= abs(y_dis)) { //ç›´æ¥ç›´çº¿ç§»åŠ¨
                     x_mov = x_dis;
                     y_mov = y_dis;
                     l_hUdev->CurrMouseAbsPosX = x;
@@ -1072,10 +1072,10 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
                 }
                 else {
                     if (y_dis > 0) {
-                        y_currpos += luc_Rnd; //×¼±¸ËãxÓÃ
+                        y_currpos += luc_Rnd; //å‡†å¤‡ç®—xç”¨
                     }
                     else {
-                        y_currpos -= luc_Rnd; //×¼±¸ËãxÓÃ
+                        y_currpos -= luc_Rnd; //å‡†å¤‡ç®—xç”¨
                     }
                     t = ((float)y_currpos)/y_oridest;
                     x_currpos = 2 * t * (1 - t) * xc + t * t * x_oridest + 0.5;
@@ -1089,7 +1089,7 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
                         y_mov = (y_mov > 0) ? 126 : -126;
                         y_currpos = y_prevpos + y_mov;
                     }
-                    if (l_hUdev->Mouse1stMovto == 1) { //ÅĞ¶ÏÊÇ·ñ»¹ÔÚÆÁÄ»ÄÚ
+                    if (l_hUdev->Mouse1stMovto == 1) { //åˆ¤æ–­æ˜¯å¦è¿˜åœ¨å±å¹•å†…
                 		if ((l_hUdev->CurrMouseAbsPosX + x_mov) < 0) {
                 			x_mov = 0 - l_hUdev->CurrMouseAbsPosX;
                 			l_hUdev->CurrMouseAbsPosX = 0;
@@ -1118,12 +1118,12 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
          		if (abs(x_dis) || abs(y_dis)) {
         			M_DelayRandom(10, 20);
         		}
-     		    if (abs(y_mov) == 0) {//ÒÑ¾­¿¿½ü±ßÔµ
+     		    if (abs(y_mov) == 0) {//å·²ç»é è¿‘è¾¹ç¼˜
         		    break;
         		}
             }
     	}
-    	if (abs(x_dis) || abs(y_dis)) {//Èç¹û»¹ÓĞÊ£ÓàÃ»ÓĞÒÆ¶¯Íê
+    	if (abs(x_dis) || abs(y_dis)) {//å¦‚æœè¿˜æœ‰å‰©ä½™æ²¡æœ‰ç§»åŠ¨å®Œ
             if (M_InternalMoveTo3(m_hdl, x, y) != 0) {
                 return -1;
             }
@@ -1132,7 +1132,7 @@ int M_MoveTo3(HANDLE m_hdl, int x, int y)
     return 0;
 }
 
-/*******************Í¨ÓÃ²Ù×÷º¯Êı****************************/
+/*******************é€šç”¨æ“ä½œå‡½æ•°****************************/
 int M_RandDomNbr(int Min_V, int Max_V)
 {
 	if (Min_V > Max_V) {
@@ -1145,13 +1145,13 @@ int M_RandDomNbr(int Min_V, int Max_V)
     return(rand()%temp + Min_V);
 }
 
-//ÑÓÊ±Ö¸¶¨Ê±¼ä  time:µ¥Î»ms
+//å»¶æ—¶æŒ‡å®šæ—¶é—´  time:å•ä½ms
 int M_Delay(int time)
 {
     usleep(time * 1000);
 	return 0;
 }
-//ÔÚ×îĞ¡×î´óÖµÖ®¼äÑÓÊ±Ëæ»úÊ±¼ä  Min_time:×îĞ¡ÑÓÊ±Ê±¼ä; Max_time: ×î´óÑÓÊ±Ê±¼ä £¨µ¥Î»£ºms£©
+//åœ¨æœ€å°æœ€å¤§å€¼ä¹‹é—´å»¶æ—¶éšæœºæ—¶é—´  Min_time:æœ€å°å»¶æ—¶æ—¶é—´; Max_time: æœ€å¤§å»¶æ—¶æ—¶é—´ ï¼ˆå•ä½ï¼šmsï¼‰
 int M_DelayRandom(int Min_time, int Max_time)
 {
 	usleep(M_RandDomNbr(Min_time, Max_time) * 1000);
