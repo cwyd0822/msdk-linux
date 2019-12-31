@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     }
 
     M_DelayRandom(2000, 3000);
-    if (M_KeyPress(m_hdl, Keyboard_a, 1000) == 0) {
+    if (M_KeyPress(m_hdl, Keyboard_a, 2048) == 0) {
         printf("KeyPress Success\n");
     }
     else {
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     }
     usleep(500000); //500ms
 
-    if (M_ResolutionUsed(m_hdl, 1920, 1080) == 0) { //¸ù¾Ý±»¿Ø»úÆÁÄ»·Ö±æÂÊ£¬×ÔÐÐÐÞ¸Ä
+    if (M_ResolutionUsed(m_hdl, 1920, 1080) == 0) { //ï¿½ï¿½ï¿½Ý±ï¿½ï¿½Ø»ï¿½ï¿½ï¿½Ä»ï¿½Ö±ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½
         printf("M_ResolutionUsed Success\n");
     }
     else {
