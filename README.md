@@ -14,8 +14,8 @@
 
 双头盒子主控端的Linux接口代码在msdk目录下，demo是例程, msdk.c、hidcomm.c是接口代码。
 
-以下将以ubuntu为例，说明如何在linux开发：
-1. 安装libusb
+**以下将以ubuntu为例，说明如何在linux开发：**
+1. **安装libusb**
   - a 进入msdkLinux目录， ./configure
   - b make
   - c make install
@@ -23,11 +23,11 @@
       - libusb.h 在/usr/local/include/libusb-1.0
       - libusb.so在/usr/local/lib
 
-2. 编译demo
+2. **编译demo**
   - a 进入msdk目录
   - b ./build.sh  生成a.out
 
-3. 测试：
+3. **测试**
   - a 将双头盒子主控端（有孔或印有“主”字的一端）插入电脑，将被控端插到被控机。
   
       被控机上打开一个记事本，并将光标点到记事本里
