@@ -36,8 +36,9 @@ int main(int argc, char *argv[])
     //    printf("KeyPress Success\n");
     // }
     srand((unsigned int)time(NULL));
-    for (int i = 0; i < 1024; i ++) {
+    for (int i = 0; i < 2048; i ++) {
         int key = rand() % 35 + 4;
+        printf("正在向目标系统输入： %c", key);
         M_KeyPress(m_hdl, key, 1);
     }
     // else {
