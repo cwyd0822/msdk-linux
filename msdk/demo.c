@@ -1,4 +1,5 @@
 #include<unistd.h>
+#include<cstdlib>
 #include "msdk.h"
 
 HANDLE m_hdl = NULL;
@@ -30,8 +31,12 @@ int main(int argc, char *argv[])
     }
 
     M_DelayRandom(2000, 3000);
-    if (M_KeyPress(m_hdl, Keyboard_a, 2048) == 0) {
-        printf("KeyPress Success\n");
+    // if (M_KeyPress(m_hdl, Keyboard_a, 2048) == 0) {
+    //    printf("KeyPress Success\n");
+    // }
+    for (int i = 0; i < 1024; i ++) {
+        int key = rand() % 35 + 4;
+        M_KeyPress(m_hdl, key, 1)
     }
     else {
         printf("KeyPress Fail\n");
