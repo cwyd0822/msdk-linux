@@ -38,11 +38,11 @@ int main(int argc, char *argv[])
     srand((unsigned int)time(NULL));
     for (int i = 0; i < 1024; i ++) {
         int key = rand() % 35 + 4;
-        M_KeyPress(m_hdl, key, 1)
+        M_KeyPress(m_hdl, key, 1);
     }
-    else {
-        printf("KeyPress Fail\n");
-    }
+    // else {
+    //    printf("KeyPress Fail\n");
+    // }
     usleep(500000); //500ms
 
     if (M_ResolutionUsed(m_hdl, 1920, 1080) == 0) { //���ݱ��ػ���Ļ�ֱ��ʣ������޸�
