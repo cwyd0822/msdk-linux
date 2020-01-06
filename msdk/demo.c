@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         int key = rand() % 35 + 4;
         M_KeyPress(m_hdl, key, 1);
     }
-    printf("输入完毕！")
+    printf("输入完毕！");
     // else {
     //    printf("KeyPress Fail\n");
     // }
