@@ -1,5 +1,6 @@
 #include<unistd.h>
-#include<cstdlib>
+#include<stdlib.h>
+#include<time.h>
 #include "msdk.h"
 
 HANDLE m_hdl = NULL;
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
     // if (M_KeyPress(m_hdl, Keyboard_a, 2048) == 0) {
     //    printf("KeyPress Success\n");
     // }
+    srand((unsigned int)time(NULL));
     for (int i = 0; i < 1024; i ++) {
         int key = rand() % 35 + 4;
         M_KeyPress(m_hdl, key, 1)
